@@ -1,0 +1,30 @@
+# Use official Node.js image as base
+FROM node:alpine
+
+# Set the working directory in the container
+WORKDIR /app
+ARG REPO_URL=""
+ARG PORT="3000"
+
+# Clone the React application from GitHub
+RUN apk --no-cache add git \
+    && git clone ${REPO_URL} . \
+    && cd */ \
+    && npm install
+
+# Expose port 3000 to the outside world
+EXPOSE ${PORT}
+
+# Define the command to run your app using npm start
+CMD ["npm", "start"]
+
+
+# React repos tested
+# https://github.com/evansinho/react-pokemon.git didnt work
+# https://github.com/Adedoyin-Emmanuel/react-weather-app.git worked
+
+# React points
+# development server/production build?
+# passed if container is running (give url/api endpoint)
+# else say not working
+# use /dev/null and give the user access to the terminal
