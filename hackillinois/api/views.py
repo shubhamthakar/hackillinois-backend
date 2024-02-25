@@ -55,7 +55,7 @@ def generate_url(request):
             elif coding_language=="flask":
                 pass
             
-            url = f'172.21.240.1:3030'  # Replace this with your Node.js server URL
+            url = f'http://localhost:3030'  # Replace this with your Node.js server URL
             data = {'container_id': container.id}
             response = requests.post(url, json=data)
             return JsonResponse({'generated_url': generated_url}, status=200)
