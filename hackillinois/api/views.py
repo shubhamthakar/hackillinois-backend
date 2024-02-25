@@ -7,6 +7,7 @@ from .serializers import GitHubURLSerializer
 from .forms import GitHubURLForm
 import socket
 import docker
+import requests
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -40,6 +41,7 @@ def generate_url(request):
                 build_args = {'REPO_URL': github_url}
                 dockerfile_path = './api/docker-files'
                 image, build_logs = client.images.build(path=dockerfile_path, tag='react_image', buildargs=build_args)
+                print(f"Build image id is {build_logs}")
                 print(f"Build image id is {image.id}")
                 container = client.containers.run(image.id, detach=True, ports=port_mappings)
                 print(f"Container started id is:{container}")
@@ -52,7 +54,10 @@ def generate_url(request):
                 pass
             elif coding_language=="flask":
                 pass
-
+            
+            url = f'172.21.240.1:3030'  # Replace this with your Node.js server URL
+            data = {'container_id': container.id}
+            response = requests.post(url, json=data)
             return JsonResponse({'generated_url': generated_url}, status=200)
         else:
             return JsonResponse(serializer.errors, status=400)

@@ -7,7 +7,8 @@ ARG REPO_URL=""
 ARG PORT="3000"
 
 # Clone the React application from GitHub
-RUN apk --no-cache add git \
+RUN apk add git \
+    && apk add vim \
     && git clone ${REPO_URL} . \
     && cd */ \
     && npm install
